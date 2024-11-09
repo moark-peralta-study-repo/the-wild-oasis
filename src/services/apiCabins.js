@@ -12,8 +12,9 @@ export async function getCabins() {
 }
 
 export async function createCabin(newCabin) {
-  console.log(newCabin);
   const imgName = `${Math.random()}-${newCabin.image.name}`.replaceAll("/", "");
+
+  const imgPath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imgName}`;
 
   // Upload Image
   const { error: storageError } = await supabase.storage
@@ -24,9 +25,6 @@ export async function createCabin(newCabin) {
     console.error(storageError);
     throw new Error("Cabin image could not be uploaded.");
   }
-
-  // Now that the image is uploaded, generate the public URL
-  const imgPath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imgName}`;
 
   // Create Cabin with the image URL
   const { data, error } = await supabase
