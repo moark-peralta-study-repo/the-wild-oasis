@@ -26,15 +26,21 @@ function CreateCabinForm() {
     },
     onError: (err) => toast.error(err.message),
   });
+  //
+  // function onSubmit(data) {
+  //   const imageFile = getValues("image")[0];
+  //   console.log(imageFile);
+  //   mutate({
+  //     ...data,
+  //     image: imageFile,
+  //   });
+  // }
+  //
 
   function onSubmit(data) {
-    const imageFile = getValues("image")[0];
-    console.log(imageFile);
-    mutate({
-      ...data,
-      image: imageFile,
-    });
+    mutate({ ...data, image: data.image[0] });
   }
+
   function onError(errors) {
     console.log(errors);
   }
