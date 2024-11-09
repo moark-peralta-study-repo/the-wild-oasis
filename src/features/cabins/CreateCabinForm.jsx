@@ -28,9 +28,13 @@ function CreateCabinForm() {
   });
 
   function onSubmit(data) {
-    mutate(data);
+    const imageFile = getValues("image")[0];
+    console.log(imageFile);
+    mutate({
+      ...data,
+      image: imageFile,
+    });
   }
-
   function onError(errors) {
     console.log(errors);
   }
@@ -100,7 +104,12 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label="Cabin Photo" htmlFor="image">
-        <FileInput id="image" accept="image/*" disabled={isCreating} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          disabled={isCreating}
+          {...register("image")}
+        />
       </FormRow>
 
       <FormRow>
