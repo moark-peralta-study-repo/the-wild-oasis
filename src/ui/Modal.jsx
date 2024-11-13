@@ -1,14 +1,7 @@
 import styled from "styled-components";
 import { HiXMark } from "react-icons/hi2";
 import { createPortal } from "react-dom";
-import {
-  cloneElement,
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { cloneElement, createContext, useContext, useState } from "react";
 import useCloseWindow from "../hooks/useOutsideClick.js";
 
 const StyledModal = styled.div`
@@ -32,6 +25,7 @@ const Overlay = styled.div`
   background-color: var(--backdrop-color);
   backdrop-filter: blur(4px);
   z-index: 1000;
+
   transition: all 0.5s;
 `;
 

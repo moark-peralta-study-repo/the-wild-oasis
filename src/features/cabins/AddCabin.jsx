@@ -1,7 +1,6 @@
 import Button from "../../ui/Button.jsx";
 import CreateCabinForm from "./CreateCabinForm.jsx";
 import Modal from "../../ui/Modal.jsx";
-import { useContext } from "react";
 
 // function AddCabin() {
 //   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -22,20 +21,16 @@ import { useContext } from "react";
 
 function AddCabin() {
   return (
-    <Modal>
-      <Modal.Open opens="cabin-form">
-        <Button>Add new cabin</Button>
-      </Modal.Open>
-      <Modal.Window name="cabin-form">
-        <CreateCabinForm />
-      </Modal.Window>
-
-      {/*<Modal.Open opens="table"></Modal.Open>*/}
-      {/*<Button>Add new cabin</Button>*/}
-      {/*<Modal.Window name="table">*/}
-      {/*  <CreateCabinForm />*/}
-      {/*</Modal.Window>*/}
-    </Modal>
+    <div>
+      <Modal>
+        <Modal.Open opens="cabin-form">
+          <Button>Add new cabin</Button>
+        </Modal.Open>
+        <Modal.Window name="cabin-form">
+          <CreateCabinForm />
+        </Modal.Window>
+      </Modal>
+    </div>
   );
 }
 
