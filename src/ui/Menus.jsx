@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { createPortal } from "react-dom";
 import useOutsideClick from "../hooks/useOutsideClick.js";
+import ScrollAndResizeHandler from "../utils/ScrollAndResizeHandler.js";
 
 const Menu = styled.div`
   display: flex;
@@ -65,27 +66,33 @@ const StyledButton = styled.button`
   }
 `;
 
-const MenusContext = createContext();
+export const MenusContext = createContext();
 
 function Menus({ children }) {
   const [openId, setOpenId] = useState("");
   const [position, setPosition] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const close = () => setOpenId("");
-  const open = setOpenId;
-
+  const close = () => {
+    setOpenId("");
+    setIsOpen(false);
+  };
+  const open = (id) => {
+    setOpenId(id);
+    setIsOpen(true);
+  };
   return (
     <MenusContext.Provider
-      value={{ openId, close, open, position, setPosition }}
+      value={{ openId, close, open, position, isOpen, setPosition }}
     >
       {children}
+      <ScrollAndResizeHandler />
     </MenusContext.Provider>
   );
 }
 
 function Toggle({ id }) {
-  const { openId, close, open, setPosition, position } =
-    useContext(MenusContext);
+  const { openId, close, open, setPosition } = useContext(MenusContext);
 
   function handleClick(e) {
     openId === "" || openId !== id ? open(id) : close();
@@ -95,8 +102,6 @@ function Toggle({ id }) {
       x: window.innerWidth - rect.width - rect.x,
       y: rect.y + rect.height + 8,
     });
-
-    console.log(position);
   }
 
   return (
