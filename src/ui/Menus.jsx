@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { createContext, useContext, useState } from "react";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { createPortal } from "react-dom";
-import useOutsideClick from "../hooks/useOutsideClick.js";
-import ScrollAndResizeHandler from "../utils/ScrollAndResizeHandler.js";
+
+import useOutsideEvent from "../hooks/useOutsideEvent.js";
 
 const Menu = styled.div`
   display: flex;
@@ -86,7 +86,6 @@ function Menus({ children }) {
       value={{ openId, close, open, position, isOpen, setPosition }}
     >
       {children}
-      <ScrollAndResizeHandler />
     </MenusContext.Provider>
   );
 }
@@ -113,7 +112,8 @@ function Toggle({ id }) {
 
 function List({ id, children }) {
   const { openId, position, close } = useContext(MenusContext);
-  const { ref } = useOutsideClick(close);
+
+  const { ref } = useOutsideEvent(close);
 
   if (openId !== id) return null;
 
@@ -121,6 +121,7 @@ function List({ id, children }) {
     <StyledList position={position} ref={ref}>
       {children}
     </StyledList>,
+
     document.body,
   );
 }
