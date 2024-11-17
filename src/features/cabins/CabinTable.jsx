@@ -4,6 +4,7 @@ import { useCabins } from "./useCabins.js";
 import CabinRow from "./CabinRow.jsx";
 import Table from "../../ui/Table.jsx";
 import Menus from "../../ui/Menus.jsx";
+import Empty from "../../ui/Empty.jsx";
 
 import Spinner from "../../ui/Spinner.jsx";
 
@@ -12,6 +13,8 @@ function CabinTable() {
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
+  if (!cabins.length) return <Empty resourceName="cabins" />;
+
   // Filter
   const filterValue = searchParams.get("discount") || "all";
 
@@ -28,6 +31,7 @@ function CabinTable() {
   const sortBy = searchParams.get("sortBy") || "starDate-asc";
   const [field, direction] = sortBy.split("-");
   const modifier = direction === "asc" ? 1 : -1;
+
   // const sortedCabins = filteredCabins.sort(
   //   (a, b) => (a[field] - b[field]) * modifier,
   // );
