@@ -9,7 +9,7 @@ import { formatDistanceFromNow } from "../../utils/helpers.js";
 import Menus from "../../ui/Menus.jsx";
 import { HiEye } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { HiArrowDownOnSquare } from "react-icons/hi2";
+import { HiArrowDownOnSquare, HiArrowUpOnSquare } from "react-icons/hi2";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -100,6 +100,15 @@ function BookingRow({
               icon={<HiArrowDownOnSquare />}
             >
               Check in
+            </Menus.Button>
+          )}
+
+          {status === "checked-in" && (
+            <Menus.Button
+              onClick={() => ()}
+              icon={<HiArrowUpOnSquare />}
+            >
+              Check out
             </Menus.Button>
           )}
         </Menus.List>
