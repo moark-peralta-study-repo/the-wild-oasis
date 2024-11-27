@@ -7,7 +7,7 @@ import ErrorFallback from "./ui/ErrorFallback.jsx";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ErrorBoundary
-      fallbackComponent={ErrorFallback}
+      FallbackComponent={ErrorFallback}
       onReset={() => window.location.replace("/")}
     >
       <App />
