@@ -9,19 +9,36 @@ function useOutsideEvent(
 
   useEffect(() => {
     function handleEvent(e) {
-      if (ref.current && !ref.current.contains(e.target)) handler();
+      // If the event target is outside the menu, invoke the handler
+      if (ref.current && !ref.current.contains(e.target)) {
+        handler();
+      }
     }
 
-    // Add event listeners for each event type
+    // Prevent scroll propagation inside the menu
+    if (ref.current) {
+      ref.current.addEventListener("scroll", (e) => e.stopPropagation(), true);
+    }
+
+    // Add event listeners for each event in the events array
     events.forEach((event) => {
       document.addEventListener(event, handleEvent, listenCapturing);
     });
 
     return () => {
-      // Clean up each event listener
+      // Clean up event listeners on unmount
       events.forEach((event) => {
         document.removeEventListener(event, handleEvent, listenCapturing);
       });
+
+      // Clean up scroll event listener on the menu element
+      if (ref.current) {
+        ref.current.removeEventListener(
+          "scroll",
+          (e) => e.stopPropagation(),
+          true,
+        );
+      }
     };
   }, [handler, events, listenCapturing]);
 
