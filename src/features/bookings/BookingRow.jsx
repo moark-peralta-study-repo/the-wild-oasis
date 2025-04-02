@@ -1,7 +1,7 @@
 import { format, isToday } from "date-fns";
 import { formatCurrency } from "../../utils/helpers.js";
 import { formatDistanceFromNow } from "../../utils/helpers.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCheckOut } from "../check-in-out/useCheckOut.js";
 import { useDeleteBooking } from "./useDeleteBooking.js";
 import { HiEye, HiTrash } from "react-icons/hi";
@@ -42,7 +42,21 @@ const Amount = styled.div`
 `;
 
 function BookingRow({
-  booking: {
+  // booking: {
+  //   id: bookingId,
+  //   created_at,
+  //   startDate,
+  //   endDate,
+  //   numNights,
+  //   numGuests,
+  //   totalPrice,
+  //   status,
+  //   guests: { fullName: guestName, email },
+  //   cabins: { name: cabinName },
+  // }
+  booking,
+}) {
+  const {
     id: bookingId,
     created_at,
     startDate,
@@ -52,9 +66,9 @@ function BookingRow({
     totalPrice,
     status,
     guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
-  },
-}) {
+    cabins,
+  } = booking;
+
   const navigate = useNavigate();
   const { checkOut, isCheckingOut } = useCheckOut();
   const { isDeleting, deleteBooking } = useDeleteBooking();
@@ -65,9 +79,15 @@ function BookingRow({
     "checked-out": "silver",
   };
 
+  if (!cabins) {
+    return <div>No cabins available.</div>;
+  }
+
+  const { name } = cabins;
+
   return (
     <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+      <Cabin>{name}</Cabin>
 
       <Stacked>
         <span>{guestName}</span>
