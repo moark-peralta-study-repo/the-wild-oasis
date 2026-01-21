@@ -63,15 +63,18 @@ function BookingDetail() {
             </Button>
           )}
 
-          <Button
-            onClick={() => {
-              checkOut(bookingId);
-            }}
-            icon={<HiArrowUpOnSquare />}
-            disabled={isCheckingOut}
-          >
-            Check out
-          </Button>
+          {status === "checked-in" && (
+
+            <Button
+              onClick={() => {
+                checkOut(bookingId);
+              }}
+              icon={<HiArrowUpOnSquare />}
+              disabled={isCheckingOut}
+            >
+              Check out
+            </Button>
+          )}
 
           <Modal.Open opens="delete">
             <Button
