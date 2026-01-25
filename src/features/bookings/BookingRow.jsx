@@ -41,128 +41,126 @@ const Amount = styled.div`
   font-weight: 500;
 `;
 
-function BookingRow({
-  // booking: {
-  //   id: bookingId,
-  //   created_at,
-  //   startDate,
-  //   endDate,
-  //   numNights,
-  //   numGuests,
-  //   totalPrice,
-  //   status,
-  //   guests: { fullName: guestName, email },
-  //   cabins: { name: cabinName },
-  // }
-  booking,
-}) {
-  const {
-    id: bookingId,
-    created_at,
-    startDate,
-    endDate,
-    numNights,
-    numGuests,
-    totalPrice,
-    status,
-    guests: { fullName: guestName, email },
-    cabins,
-  } = booking;
+function BookingRow({ booking }) {
+	const {
+		id: bookingId,
+		created_at,
+		startDate,
+		endDate,
+		numNights,
+		numGuests,
+		totalPrice,
+		status,
+		guests,
+		cabins,
+	} = booking;
 
-  const navigate = useNavigate();
-  const { checkOut, isCheckingOut } = useCheckOut();
-  const { isDeleting, deleteBooking } = useDeleteBooking();
+	const navigate = useNavigate();
+	const { checkOut, isCheckingOut } = useCheckOut();
+	const { isDeleting, deleteBooking } = useDeleteBooking();
 
-  const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
-  };
+	const statusToTagName = {
+		unconfirmed: "blue",
+		"checked-in": "green",
+		"checked-out": "silver",
+	};
 
-  if (!cabins) {
-    return <div>No cabins available.</div>;
-  }
+	// Handle null/undefined guests
+	const guestName = guests?.fullName || "No guest assigned";
+	const email = guests?.email || "No email available";
 
-  const { name } = cabins;
+	// Handle null/undefined cabins
+	const cabinName = cabins?.name || "No cabin assigned";
 
-  return (
-    <Table.Row>
-      <Cabin>{name}</Cabin>
+	// You might also want to handle the case where startDate/endDate might be null
+	const formattedStartDate = startDate
+		? format(new Date(startDate), "MMM dd yyyy")
+		: "N/A";
+	const formattedEndDate = endDate
+		? format(new Date(endDate), "MMM dd yyyy")
+		: "N/A";
 
-      <Stacked>
-        <span>{guestName}</span>
-        <span>{email}</span>
-      </Stacked>
+	return (
+		<Table.Row>
+			<Cabin>{cabinName}</Cabin>
 
-      <Stacked>
-        <span>
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}{" "}
-          &rarr; {numNights} night stay
-        </span>
-        <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
-        </span>
-      </Stacked>
+			<Stacked>
+				<span>{guestName}</span>
+				<span>{email}</span>
+			</Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
-      <Amount>{formatCurrency(totalPrice)}</Amount>
+			<Stacked>
+				<span>
+					{startDate && isToday(new Date(startDate))
+						? "Today"
+						: startDate
+							? formatDistanceFromNow(startDate)
+							: "No date"}{" "}
+					{numNights ? `→ ${numNights} night stay` : ""}
+				</span>
+				<span>
+					{formattedStartDate} {startDate && endDate ? "—" : ""}{" "}
+					{formattedEndDate}
+				</span>
+			</Stacked>
 
-      <Modal>
-        <Menus.Menu>
-          <Menus.Toggle id={bookingId} />
-          <Menus.List id={bookingId}>
-            <Menus.Button
-              onClick={() => navigate(`/bookings/${bookingId}`)}
-              icon={<HiEye />}
-            >
-              See Details
-            </Menus.Button>
-            {status === "unconfirmed" && (
-              <Menus.Button
-                onClick={() => navigate(`/checkin/${bookingId}`)}
-                icon={<HiArrowDownOnSquare />}
-              >
-                Check in
-              </Menus.Button>
-            )}
+			<Tag type={statusToTagName[status] || "grey"}>
+				{status ? status.replace("-", " ") : "unknown"}
+			</Tag>
+			<Amount>{formatCurrency(totalPrice || 0)}</Amount>
 
-            {status === "checked-in" && (
-              <Menus.Button
-                onClick={() => {
-                  checkOut(bookingId);
-                }}
-                icon={<HiArrowUpOnSquare />}
-                disabled={isCheckingOut}
-              >
-                Check out
-              </Menus.Button>
-            )}
+			<Modal>
+				<Menus.Menu>
+					<Menus.Toggle id={bookingId} />
+					<Menus.List id={bookingId}>
+						<Menus.Button
+							onClick={() => navigate(`/bookings/${bookingId}`)}
+							icon={<HiEye />}
+						>
+							See Details
+						</Menus.Button>
+						{status === "unconfirmed" && (
+							<Menus.Button
+								onClick={() => navigate(`/checkin/${bookingId}`)}
+								icon={<HiArrowDownOnSquare />}
+							>
+								Check in
+							</Menus.Button>
+						)}
 
-            <Modal.Open opens="delete">
-              <Menus.Button
-                onClick={() => deleteBooking(bookingId)}
-                disabled={isDeleting}
-                icon={<HiTrash />}
-              >
-                Delete
-              </Menus.Button>
-            </Modal.Open>
-          </Menus.List>
-        </Menus.Menu>
+						{status === "checked-in" && (
+							<Menus.Button
+								onClick={() => {
+									checkOut(bookingId);
+								}}
+								icon={<HiArrowUpOnSquare />}
+								disabled={isCheckingOut}
+							>
+								Check out
+							</Menus.Button>
+						)}
 
-        <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="bookings"
-            disabled={isDeleting}
-            onConfirm={() => deleteBooking(bookingId)}
-          />
-        </Modal.Window>
-      </Modal>
-    </Table.Row>
-  );
+						<Modal.Open opens="delete">
+							<Menus.Button
+								onClick={() => deleteBooking(bookingId)}
+								disabled={isDeleting}
+								icon={<HiTrash />}
+							>
+								Delete
+							</Menus.Button>
+						</Modal.Open>
+					</Menus.List>
+				</Menus.Menu>
+
+				<Modal.Window name="delete">
+					<ConfirmDelete
+						resourceName="bookings"
+						disabled={isDeleting}
+						onConfirm={() => deleteBooking(bookingId)}
+					/>
+				</Modal.Window>
+			</Modal>
+		</Table.Row>
+	);
 }
-
 export default BookingRow;
