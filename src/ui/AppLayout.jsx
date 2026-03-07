@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import Header from "./Header.jsx";
 import Sidebar from "./Sidebar.jsx";
-import App from "../App.jsx";
+import Uploader from "../data/Uploader.jsx";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -26,17 +26,18 @@ const Container = styled.div`
 `;
 
 function AppLayout() {
-  return (
-    <StyledAppLayout>
-      <Header />
-      <Sidebar />
-      <Main>
-        <Container>
-          <Outlet />
-        </Container>
-      </Main>
-    </StyledAppLayout>
-  );
+	return (
+		<StyledAppLayout>
+			<Header />
+			<Sidebar />
+			<Main>
+				<Container>
+					<Outlet />
+				</Container>
+			</Main>
+			<Uploader />
+		</StyledAppLayout>
+	);
 }
 
 export default AppLayout;
