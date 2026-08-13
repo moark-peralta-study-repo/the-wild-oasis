@@ -16,25 +16,49 @@ public class Cabin {
 
   @Column(name = "created_at")
   private LocalDateTime createdAt;
+
   private String name;
   private String description;
-  private String image;
+  private String imageUrl;
+  private String imagePath;
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+  public String getImagePath() {
+    return imagePath;
+  }
+
+  public void setImagePath(String imagePath) {
+    this.imagePath = imagePath;
+  }
 
   @Column(name = "max_capacity")
   private Short maxCapacity;
+
   @Column(name = "regular_price")
   private Short regularPrice;
 
-  public Cabin() {
-  }
+  public Cabin() {}
 
-  public Cabin(Long cabinId, LocalDateTime createdAt, String name, String description, String image, Short maxCapacity,
+  public Cabin(
+      Long cabinId,
+      LocalDateTime createdAt,
+      String name,
+      String description,
+      String imageUrl,
+      Short maxCapacity,
       Short regularPrice) {
     this.cabinId = cabinId;
     this.createdAt = createdAt;
     this.name = name;
     this.description = description;
-    this.image = image;
+    this.imageUrl = imageUrl;
     this.maxCapacity = maxCapacity;
     this.regularPrice = regularPrice;
   }
@@ -72,11 +96,11 @@ public class Cabin {
   }
 
   public String getImage() {
-    return image;
+    return imageUrl;
   }
 
-  public void setImage(String image) {
-    this.image = image;
+  public void setImage(String imageUrl) {
+    this.imageUrl = imageUrl;
   }
 
   public Short getMaxCapacity() {
@@ -94,5 +118,4 @@ public class Cabin {
   public void setRegularPrice(Short regularPrice) {
     this.regularPrice = regularPrice;
   }
-
 }
