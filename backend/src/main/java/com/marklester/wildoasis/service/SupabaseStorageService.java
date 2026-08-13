@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.marklester.wildoasis.config.SupabaseProperties;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,7 +55,15 @@ public class SupabaseStorageService implements StorageService {
 
   @Override
   public void delete(String imagePath) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    String url =
+        properties.getUrl() + "/storage/v1/object/" + properties.getBucket() + "/" + imagePath;
+
+    restClient
+        .delete()
+        .uri(url)
+        .header(HttpHeaders.AUTHORIZATION, "Bearer " + properties.getServiceKey())
+        .header("apikey", properties.getServiceKey())
+        .retrieve()
+        .toBodilessEntity();
   }
 }
