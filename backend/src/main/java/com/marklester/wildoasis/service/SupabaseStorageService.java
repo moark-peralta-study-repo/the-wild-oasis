@@ -21,7 +21,7 @@ public class SupabaseStorageService implements StorageService {
     this.restClient = restClient;
   }
 
-  public String upload(MultipartFile file) {
+  public StorageUploadResult upload(MultipartFile file) {
 
     // Generate name
     String original = Objects.requireNonNull(file.getOriginalFilename());
@@ -50,7 +50,7 @@ public class SupabaseStorageService implements StorageService {
     } catch (IOException e) {
       throw new RuntimeException("Failed to read uploaded file", e);
     }
-    return imageUrl;
+    return new StorageUploadResult(imageUrl, filename);
   }
 
   @Override
