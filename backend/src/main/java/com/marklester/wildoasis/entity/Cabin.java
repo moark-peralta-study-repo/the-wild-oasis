@@ -21,22 +21,7 @@ public class Cabin {
   private String description;
   private String imageUrl;
   private String imagePath;
-
-  public String getImageUrl() {
-    return imageUrl;
-  }
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
-  }
-
-  public String getImagePath() {
-    return imagePath;
-  }
-
-  public void setImagePath(String imagePath) {
-    this.imagePath = imagePath;
-  }
+  private Integer discount;
 
   @Column(name = "max_capacity")
   private Short maxCapacity;
@@ -53,7 +38,8 @@ public class Cabin {
       String description,
       String imageUrl,
       Short maxCapacity,
-      Short regularPrice) {
+      Short regularPrice,
+      Integer discount) {
     this.cabinId = cabinId;
     this.createdAt = createdAt;
     this.name = name;
@@ -61,6 +47,23 @@ public class Cabin {
     this.imageUrl = imageUrl;
     this.maxCapacity = maxCapacity;
     this.regularPrice = regularPrice;
+    this.discount = discount;
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+  public String getImagePath() {
+    return imagePath;
+  }
+
+  public void setImagePath(String imagePath) {
+    this.imagePath = imagePath;
   }
 
   public Long getCabinId() {
@@ -117,5 +120,13 @@ public class Cabin {
 
   public void setRegularPrice(Short regularPrice) {
     this.regularPrice = regularPrice;
+  }
+
+  public Integer getDiscount() {
+    return discount;
+  }
+
+  public void setDiscount(Integer discount) {
+    this.discount = discount;
   }
 }
